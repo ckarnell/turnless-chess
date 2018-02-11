@@ -1,0 +1,12 @@
+$dark-color: #f0d9b5;
+$light-color: #b58863;
+
+.tile {
+  background-color: $light-color;
+  height: 50px;
+  width: 51px;
+
+  &.dark {
+    background-color: $dark-color;
+  }
+};
