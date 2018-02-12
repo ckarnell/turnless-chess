@@ -18,9 +18,9 @@ class NotYourPieceException(Exception):
 
 
 class Player(object):
-    def __init__(self, color):
+    def __init__(self, color, player_id=None):
         self.color = color
-
+        self.player_id = player_id
 
 class Board(object):
     def __init__(self):
@@ -99,6 +99,19 @@ class Chess(Board):
             raise LocationOccupiedException
         if piece.color != player.color:
             raise NotYourPieceException
+
+    def get_white_player(self):
+        return self.white_player
+
+    def get_black_player(self):
+        return self.black_player
+
+    def get_board_state(self):
+        return {
+            tile: piece.representation
+            for tile, piece in self.board_rep.items()
+            if piece
+        }
 
     def move(self, current_location, next_location, player):
         # Check move legality at the board level

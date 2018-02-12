@@ -9,11 +9,6 @@ export class Piece extends Component {
     e.preventDefault();
   }
 
-  constructor(props) {
-    super(props);
-    // this._onDragStart = this._onDragStart.bind(this);
-  }
-
   render() {
     return (
       <Draggable>
