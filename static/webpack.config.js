@@ -1,4 +1,4 @@
-const webpack = require('webpack');
+require('webpack');
 
 const config = {
   entry: __dirname + '/app.js',

@@ -1,11 +1,12 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
+import _get from 'lodash/get';
 import classNames from 'classnames';
 import { Piece } from './Piece';
 import css from './Tile.scss';
 
 function drop(e) {
-  // TODO: Call the endpoint to see if dropping here is allowed
   console.log('HOHO'); // TODO: Delete
   e.preventDefault();
   const data = e.dataTransfer.getData('text');
@@ -17,7 +18,7 @@ function allowDrop(e) { // Doesn't seem to work
   console.log('HEYHEY'); // TODO: Delete
 }
 
-export class Tile extends PureComponent {
+class Tile extends PureComponent {
   componentWillMount() {
     this.setState({ piece: 'piece' });
   }
@@ -25,6 +26,7 @@ export class Tile extends PureComponent {
   render() {
     const {
       dark,
+      pieceKey,
     } = this.props;
 
     return (
@@ -33,7 +35,7 @@ export class Tile extends PureComponent {
         onDrop={drop}
         onDragOver={allowDrop}
       >
-        <Piece />
+        <Piece pieceKey={pieceKey} />
       </td>
     );
   }
@@ -45,6 +47,12 @@ Tile.defaultProps = {
 
 Tile.propTypes = {
   dark: PropTypes.bool,
+  pieceKey: PropTypes.string,
 };
 
-export default Tile;
+const mapStateToProps = (state, props) => {
+  const pieceKey = _get(state, `boardState.${props.location}`, null);
+  return { pieceKey };
+};
+
+export default connect(mapStateToProps, null)(Tile);

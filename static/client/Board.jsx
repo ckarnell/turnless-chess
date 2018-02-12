@@ -1,34 +1,30 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import { Tile } from './Tile';
+import Tile from './Tile';
 import css from './Board.scss';
 
 export class Board extends PureComponent {
-  constructor(props) {
-    super(props);
-    this._renderBoard = this._renderBoard.bind(this);
-  }
-
-  componentWillMount() {
-    const board = this._renderBoard();
-    this.setState({ board });
-  }
-
-  _renderBoard() {
+  static _renderBoard() {
     const rowNums = ['8', '7', '6', '5', '4', '3', '2', '1'];
     const colChars = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
-    return colChars.map((char, charInd) => {
+    return rowNums.map((num, charInd) => {
       return (
-        <tr key={char}>
-          {rowNums.map((num, numInd) => (
+        <tr key={num}>
+          {colChars.map((char, numInd) => (
             <Tile
               dark={!!((charInd + numInd + 1) % 2)}
+              location={`${char}${num}`}
               key={`${char}${num}`}
             />
           ))}
         </tr>
       );
     });
+  }
+
+  componentWillMount() {
+    const board = this.constructor._renderBoard();
+    this.setState({ board });
   }
 
   render() {
