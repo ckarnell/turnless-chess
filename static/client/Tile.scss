@@ -4,6 +4,7 @@ $light-color: #b58863;
 .tile {
   background-color: $light-color;
   height: 50px;
+  position: relative;
   width: 51px;
 
   &.dark {

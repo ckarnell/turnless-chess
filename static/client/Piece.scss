@@ -1,4 +1,8 @@
 .piece {
-  height: 50px;
+  background: none;
+  background-color: transparent;
+  position: absolute;
+  top: 0;
   width: 50px;
+  z-index: 10;
 }

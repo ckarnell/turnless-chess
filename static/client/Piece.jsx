@@ -5,7 +5,7 @@ import whitePawn from '../assets/white_pawn_large.png';
 import whiteRook from '../assets/white_rook_large.png';
 import whiteKnight from '../assets/white_knight_large.png';
 import whiteBishop from '../assets/white_bishop_large.png';
-// import whiteQueen from '../assets/white_queen_large.png';
+import whiteQueen from '../assets/white_queen_large.png';
 import whiteKing from '../assets/white_king_large.png';
 import blackPawn from '../assets/black_pawn_large.png';
 import blackRook from '../assets/black_rook_large.png';
@@ -20,7 +20,7 @@ const pieceMap = {
   Wr: whiteRook,
   Wn: whiteKnight,
   Wb: whiteBishop,
-  Wq: null, // TODO: Fix
+  Wq: whiteQueen, // TODO: Fix
   Wk: whiteKing,
   Bp: blackPawn,
   Br: blackRook,
@@ -58,6 +58,17 @@ class Piece extends Component {
     e.preventDefault();
   }
 
+//   componentDidMount() {
+//     const {
+//       connectDragPreview,
+//       pieceKey,
+//     } = this.props;
+//     const img = new Image();
+//     const src = pieceMap[pieceKey];
+//     img.src = src;
+//     img.onload = () => connectDragPreview(img);
+//   }
+
   render() {
     const {
       pieceKey,
@@ -88,9 +99,11 @@ Piece.propTypes = {
   // Injected by React DnD:
   connectDragSource: PropTypes.func.isRequired,
   isDragging: PropTypes.bool.isRequired,
+  connectDragPreview: PropTypes.func,
 };
 
 export default new DragSource('PIECE', pieceSource, (connect, monitor) => ({
   connectDragSource: connect.dragSource(),
+  connectDragPreview: connect.dragPreview(),
   isDragging: monitor.isDragging(),
 }))(Piece);

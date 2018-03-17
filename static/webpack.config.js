@@ -61,7 +61,7 @@ const config = {
           {
             loader: 'url-loader',
             options: {
-              limit: 10000,
+              limit: 100000,
               name: '[path][name].[ext]',
             },
           },
