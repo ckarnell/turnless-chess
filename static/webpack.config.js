@@ -1,8 +1,12 @@
 require('webpack');
+var DashboardPlugin = require('webpack-dashboard/plugin');
 
 const config = {
   entry: __dirname + '/app.js',
   devtool: 'inline-source-map',
+  plugins: [
+    new DashboardPlugin(),
+  ],
   // devServer: {
   //   contentBase: __dirname + '/dist',
   //   compress: true,

@@ -1,6 +1,6 @@
 import io from 'socket.io-client';
 import {
-  setPlayerId,
+  setPlayer,
   setRoom,
   setBoardState,
   receiveMove,
@@ -22,7 +22,7 @@ export default function connect(domain, port, store) {
   });
 
   socket.on(eventEnums.PLAYER_IDENTIFIED, (data) => {
-    store.dispatch(setPlayerId(data.playerId));
+    store.dispatch(setPlayer(data.player));
     store.dispatch(setRoom(data.room));
     store.dispatch(setBoardState(data.boardState));
   });

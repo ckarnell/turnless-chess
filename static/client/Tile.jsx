@@ -1,41 +1,65 @@
 import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
+import { DropTarget } from 'react-dnd';
 import { connect } from 'react-redux';
 import _get from 'lodash/get';
 import classNames from 'classnames';
-import { Piece } from './Piece';
+import Piece from './Piece';
 import css from './Tile.scss';
 
-function drop(e) {
-  console.log('HOHO'); // TODO: Delete
-  e.preventDefault();
-  const data = e.dataTransfer.getData('text');
-  e.target.appendChild(document.getElementById(data));
+const tileTarget = {
+  drop(props) {
+    const {
+      location,
+    } = props;
+    return {
+      location,
+    };
+  },
+  canDrop() {
+    return true;
+  },
+};
+
+function collect(dragConnect, monitor) {
+  return {
+    connectDropTarget: dragConnect.dropTarget(),
+    isOver: monitor.isOver(),
+  };
 }
 
-function allowDrop(e) { // Doesn't seem to work
-  e.preventDefault();
-  console.log('HEYHEY'); // TODO: Delete
-}
-
-class Tile extends PureComponent {
-  componentWillMount() {
-    this.setState({ piece: 'piece' });
+class Tile extends Component {
+  shouldComponentUpdate(nextProps) {
+    const {
+      pieceKey,
+      draggable,
+    } = this.props;
+    if ((pieceKey !== nextProps.pieceKey) || (draggable !== nextProps.draggable)) {
+      return true;
+    }
+    return false;
   }
 
   render() {
     const {
       dark,
       pieceKey,
+      draggable,
+      connectDropTarget,
+      onPieceDrop,
+      location,
     } = this.props;
 
-    return (
+    return connectDropTarget(
       <td
         className={classNames(css.tile, { [css.dark]: dark })}
-        onDrop={drop}
-        onDragOver={allowDrop}
       >
-        <Piece pieceKey={pieceKey} />
+        <Piece
+          pieceKey={pieceKey}
+          location={location}
+          onPieceDrop={onPieceDrop}
+          draggable={draggable}
+        />
       </td>
     );
   }
@@ -43,16 +67,25 @@ class Tile extends PureComponent {
 
 Tile.defaultProps = {
   dark: true,
+  onPieceDrop: () => {},
 };
 
 Tile.propTypes = {
   dark: PropTypes.bool,
+  draggable: PropTypes.bool,
   pieceKey: PropTypes.string,
+  onPieceDrop: PropTypes.func,
+  location: PropTypes.string,
+
+  // Injected by React DnD:
+  connectDropTarget: PropTypes.func,
 };
 
 const mapStateToProps = (state, props) => {
   const pieceKey = _get(state, `boardState.${props.location}`, null);
-  return { pieceKey };
+  const color = _get(state, 'player.color', null);
+  const draggable = pieceKey && color && pieceKey[0] === color;
+  return { pieceKey, draggable };
 };
 
-export default connect(mapStateToProps, null)(Tile);
+export default connect(mapStateToProps, null)(new DropTarget('PIECE', tileTarget, collect)(Tile));

@@ -8,7 +8,10 @@ export const actionEnums = {
 export default function reducer(state = {}, action) {
   switch (action.type) {
     case actionEnums.SET_PLAYER:
-      return Object.assign({}, state, { playerId: action.payload.playerId });
+      return Object.assign({},
+        state,
+        { player: Object.assign({}, state.player, action.payload) }
+      );
     case actionEnums.SET_ROOM:
       return Object.assign({}, state, { roomId: action.payload.roomId });
     case actionEnums.SET_BOARD_STATE:
@@ -19,10 +22,10 @@ export default function reducer(state = {}, action) {
 }
 
 // Action creators
-export function setPlayerId(playerId) {
+export function setPlayer(player) {
   return {
     type: actionEnums.SET_PLAYER,
-    payload: { playerId },
+    payload: player,
   };
 }
 

@@ -1,0 +1,30 @@
+-   repo: git://github.com/pre-commit/mirrors-scss-lint
+    sha: v0.56.0
+    hooks:
+    -   id: scss-lint
+-   repo: git://github.com/pre-commit/mirrors-eslint
+    sha: v4.15.0
+    hooks:
+    -   id: eslint
+        files: \.jsx?$
+        additional_dependencies:
+        - eslint@3.7.0
+        - eslint-plugin-import@1.16.0
+        - eslint-plugin-react@6.3.0
+        - eslint-plugin-jsx-a11y@2.2.2
+        - eslint-config-airbnb@12.0.0
+        exclude: webpack
+-   repo: git://github.com/pre-commit/mirrors-pylint
+    sha: db16f7ec685d20c86a49ecc94087856f0a9b9028
+    hooks:
+    -   id: pylint
+        name: pylint
+        entry: python -m pylint.__main__
+        language: system # TODO: Delete?
+        language_version: python3.6
+        files: \.py$
+        additional_dependencies:
+        - pylint==1.8.1
+        - pylint-flask==0.5
+        - astroid==1.6.0
+        exclude: alembic
