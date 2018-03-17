@@ -127,7 +127,13 @@ class Pawn(Piece):
         # Attackable spaces
         one_forward_right = self._one_forward_right(current_location)
         one_forward_left = self._one_forward_left(current_location)
-        for move in self._filter_moves([one_forward_left, one_forward_right], board_rep):
+        moves = [
+            move for move in [one_forward_left, one_forward_right]
+            if move in board_rep and # Space exists
+            board_rep[move] and # Space is not empty
+            board_rep[move].color != self.color # Space is occupied by enemy piece
+        ]
+        for move in moves:
             result[move] = {}
         return result
 

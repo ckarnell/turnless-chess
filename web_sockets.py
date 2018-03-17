@@ -58,7 +58,7 @@ class GameCore(Namespace):
         game = self.room_game_map[data['roomId']]
         player = self.player_id_instance_map[request.sid]
         game.move(data['fromLocation'], data['toLocation'], player)
-        emit(Events.MOVE_MADE.value, game.get_board_state())
+        emit(Events.MOVE_MADE.value, game.get_board_state(), room=data['roomId'])
 
     def on_join_game(self):
         player_id = request.sid

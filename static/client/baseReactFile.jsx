@@ -28,9 +28,7 @@ class baseComponent extends Component {
     const roomId = _get(this.store.getState(), 'roomId');
     const data = Object.assign({},
       moveInfo,
-      {
-        roomId,
-      },
+      { roomId },
     );
     this.socket.emit('move', data);
   }
