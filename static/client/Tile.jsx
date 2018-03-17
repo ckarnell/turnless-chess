@@ -13,7 +13,7 @@ const tileTarget = {
       location,
     } = props;
     return {
-      location,
+      toLocation: location,
     };
   },
   canDrop() {
@@ -29,6 +29,11 @@ function collect(dragConnect, monitor) {
 }
 
 class Tile extends Component {
+  constructor() {
+    super();
+    this._decoratedPieceDrop = this._decoratedPieceDrop.bind(this);
+  }
+
   shouldComponentUpdate(nextProps) {
     const {
       pieceKey,
@@ -40,13 +45,24 @@ class Tile extends Component {
     return false;
   }
 
+  _decoratedPieceDrop(args) {
+    const {
+      onPieceDrop,
+      location,
+    } = this.props;
+    const composedArgs = Object.assign({},
+      args,
+      { fromLocation: location },
+    );
+    return onPieceDrop(composedArgs);
+  }
+
   render() {
     const {
       dark,
       pieceKey,
       draggable,
       connectDropTarget,
-      onPieceDrop,
       location,
     } = this.props;
 
@@ -57,7 +73,7 @@ class Tile extends Component {
         <Piece
           pieceKey={pieceKey}
           location={location}
-          onPieceDrop={onPieceDrop}
+          onPieceDrop={this._decoratedPieceDrop}
           draggable={draggable}
         />
       </td>

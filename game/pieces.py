@@ -1,3 +1,4 @@
+# pylint: disable=too-many-instance-attributes, arguments-differ
 PIECE_SYMBOL_MAP = {
     'Wp': '♟',
     'Wr': '♜',
@@ -32,7 +33,7 @@ class Piece():
         self.diagonal_moves = [self._one_forward_right,
                                self._one_backward_right,
                                self._one_forward_left,
-                               self._one_backward_right]
+                               self._one_backward_left]
         self.potential_move_funcs = []
 
     def _filter_moves(self, moves_list, board_rep):

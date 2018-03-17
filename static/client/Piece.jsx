@@ -41,12 +41,13 @@ const pieceSource = {
     if (monitor.didDrop()) {
       const {
         pieceKey,
+        onPieceDrop,
       } = props;
       const result = Object.assign({},
         monitor.getDropResult(),
         { pieceKey },
       );
-      props.onPieceDrop(result);
+      onPieceDrop(result);
     }
   },
 };
