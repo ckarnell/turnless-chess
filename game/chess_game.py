@@ -1,4 +1,5 @@
-from .pieces import Pawn, Rook, Knight, Bishop, Queen, King, IllegalMoveException
+# pylint: disable=keyword-arg-before-vararg
+from .pieces import Pawn, Rook, Knight, Bishop, Queen, King
 from .colors import Black, White
 
 LETTERS = 'abcdefgh'
@@ -87,18 +88,18 @@ class Chess(Board):
     def _location_checks(self, *args):
         for location in args:
             if not self.location_exists(location):
-                raise NoLocationException
+                raise NoLocationException('That\'s not a square on the board!')
 
     def _handle_side_effects(self, side_effects=None):
         pass
 
     def _piece_checks(self, piece, player, next_location):
         if not self._piece_exists(piece):
-            raise NoPieceException
+            raise NoPieceException('There\'s no piece there...')
         if self._location_occupied(piece.color, next_location):
-            raise LocationOccupiedException
+            raise LocationOccupiedException('Can\'t move onto another piece')
         if piece.color != player.color:
-            raise NotYourPieceException
+            raise NotYourPieceException('Can\'t capture your own piece')
 
     def get_white_player(self):
         return self.white_player

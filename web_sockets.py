@@ -2,15 +2,15 @@ from random import getrandbits
 from enum import Enum
 from flask import request
 from flask_socketio import Namespace, emit, join_room, leave_room
-
-from game.chess_game import Chess
+from game.chess_game import Chess, NoPieceException, LocationOccupiedException, NotYourPieceException
+from game.pieces import IllegalMoveException
 
 
 class Events(Enum):
     # Emittables
     PLAYER_IDENTIFIED = 'playerIdentified'
     MOVE_MADE = 'move_made'
-
+    ERROR = 'error'
 
 class Keys(Enum):
     PLAYER = 'player'
@@ -57,8 +57,11 @@ class GameCore(Namespace):
         print(f'Player {request.sid[:5]}... wants to move {data["fromLocation"]} to {data["toLocation"]}')
         game = self.room_game_map[data['roomId']]
         player = self.player_id_instance_map[request.sid]
-        game.move(data['fromLocation'], data['toLocation'], player)
-        emit(Events.MOVE_MADE.value, game.get_board_state(), room=data['roomId'])
+        try:
+            game.move(data['fromLocation'], data['toLocation'], player)
+            emit(Events.MOVE_MADE.value, game.get_board_state(), room=data['roomId'])
+        except (NoPieceException, LocationOccupiedException, NotYourPieceException, IllegalMoveException) as e:
+            emit(Events.ERROR.value, {'message': str(e)})
 
     def on_join_game(self):
         player_id = request.sid

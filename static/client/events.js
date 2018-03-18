@@ -3,6 +3,7 @@ import {
   setPlayer,
   setRoom,
   setBoardState,
+  setGameMessage,
   receiveMove,
 } from './redux/gameStart.js';
 
@@ -14,6 +15,7 @@ export const eventEnums = {
   DISCONNECT: 'disconnect',
   LEAVE_ROOM: 'leave_room',
   JOIN_GAME: 'join_game',
+  ERROR: 'error',
 };
 
 export default function connect(domain, port, store) {
@@ -33,8 +35,12 @@ export default function connect(domain, port, store) {
     store.dispatch(receiveMove(data.move));
   });
 
-  socket.on(eventEnums.MOVE_MADE, (data) => {
-    store.dispatch(setBoardState(data));
+  socket.on(eventEnums.MOVE_MADE, (boardState) => {
+    store.dispatch(setBoardState(boardState));
+  });
+
+  socket.on(eventEnums.ERROR, (error) => {
+    store.dispatch(setGameMessage(error.message));
   });
 
   return socket;

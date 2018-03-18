@@ -101,7 +101,7 @@ class Piece():
     def update(self, current_location, next_location, board_rep):
         moves = self._possible_moves(current_location, board_rep, self.potential_move_funcs)
         if next_location not in moves:
-            raise IllegalMoveException
+            raise IllegalMoveException('Not a legal move!')
         self._clean_metadata(moves[next_location])
 
 
@@ -147,7 +147,7 @@ class Pawn(Piece):
     def update(self, current_location, next_location, board_rep):
         moves = self._possible_moves(current_location, board_rep)
         if next_location not in moves:
-            raise IllegalMoveException
+            raise IllegalMoveException('Not a legal move!')
         return self._clean_metadata(moves[next_location])
 
 
@@ -173,7 +173,7 @@ class Knight(Piece):
     def update(self, current_location, next_location, board_rep):
         moves = self._possible_moves(current_location, board_rep)
         if next_location not in moves:
-            raise IllegalMoveException
+            raise IllegalMoveException('Not a legal move!')
         self._clean_metadata(moves[next_location])
 
 
@@ -183,7 +183,7 @@ class Bishop(Piece):
     def update(self, current_location, next_location, board_rep):
         moves = self._possible_moves(current_location, board_rep, self.diagonal_moves)
         if next_location not in moves:
-            raise IllegalMoveException
+            raise IllegalMoveException('Not a legal move!')
         self._clean_metadata(moves[next_location])
 
 
@@ -194,7 +194,7 @@ class Queen(Piece):
         move_functions = self.diagonal_moves + self.perpendicular_moves
         moves = self._possible_moves(current_location, board_rep, move_functions)
         if next_location not in moves:
-            raise IllegalMoveException
+            raise IllegalMoveException('Not a legal move!')
         self._clean_metadata(moves[next_location])
 
 
@@ -213,5 +213,5 @@ class King(Piece):
         move_functions = self.diagonal_moves + self.perpendicular_moves
         moves = self._possible_moves(current_location, board_rep, move_functions)
         if next_location not in moves:
-            raise IllegalMoveException
+            raise IllegalMoveException('Not a legal move!')
         self._clean_metadata(moves[next_location])

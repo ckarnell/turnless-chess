@@ -58,17 +58,6 @@ class Piece extends Component {
     e.preventDefault();
   }
 
-//   componentDidMount() {
-//     const {
-//       connectDragPreview,
-//       pieceKey,
-//     } = this.props;
-//     const img = new Image();
-//     const src = pieceMap[pieceKey];
-//     img.src = src;
-//     img.onload = () => connectDragPreview(img);
-//   }
-
   render() {
     const {
       pieceKey,
@@ -99,11 +88,9 @@ Piece.propTypes = {
   // Injected by React DnD:
   connectDragSource: PropTypes.func.isRequired,
   isDragging: PropTypes.bool.isRequired,
-  connectDragPreview: PropTypes.func,
 };
 
 export default new DragSource('PIECE', pieceSource, (connect, monitor) => ({
   connectDragSource: connect.dragSource(),
-  connectDragPreview: connect.dragPreview(),
   isDragging: monitor.isDragging(),
 }))(Piece);

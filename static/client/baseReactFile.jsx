@@ -4,7 +4,7 @@ import _get from 'lodash/get';
 import { createStore } from 'redux';
 import reducer from './redux/gameStart.js';
 import connectSocket from './events.js';
-import Board from './Board';
+import Game from './Game';
 
 const reduxDevExtension = (
   window.__REDUX_DEVTOOLS_EXTENSION__ &&
@@ -36,8 +36,8 @@ class baseComponent extends Component {
   render() {
     return (
       <Provider store={this.store}>
-        <Board
-          onPieceDrop={this.onPieceDrop}
+        <Game
+          socket={this.socket}
         />
       </Provider>
     );
